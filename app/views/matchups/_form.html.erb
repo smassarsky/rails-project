@@ -1,0 +1,36 @@
+
+<%= form_for matchup do |f|%>
+  <div class="form-group row">
+    <%= f.label :name, class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :name, class: "form-control" %>
+    </div>
+    <%= errors(matchup, :name) %>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :start_date, class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-3">
+      <%= f.date_field :start_date, class: "form-control" %>
+    </div>
+    <%= errors(matchup, :start_date) %>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :end_date, class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-3">
+      <%= f.date_field :end_date, class: "form-control" %>
+    </div>
+    <%= errors(matchup, :end_date) %>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :team, class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-6">
+      <%= f.collection_select :team_id, Team.all, :id, :full_team_name, {}, class: "form-control" %>
+    </div>
+    <%= errors(matchup, :team_id) %>
+  </div>
+  
+  <%= f.submit class: "btn btn-primary" %>
+<% end %>

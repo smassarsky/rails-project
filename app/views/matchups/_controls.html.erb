@@ -1,0 +1,11 @@
+<div class="row justify-content-center">
+
+  <% if matchup.status == "Pre-Draft" %>
+    <%= link_to "Start Draft", matchup_start_draft_path(matchup), class: "btn ml-3 btn-primary" %>
+  <% end %>
+
+  <%= link_to "Edit Matchup", edit_matchup_path(matchup), class: "btn ml-3 btn-primary" %>
+
+  <%= button_to "Delete Matchup", "/matchups/#{matchup.id}", method: "delete", class: "btn ml-3 btn-danger" %>
+  
+</div>

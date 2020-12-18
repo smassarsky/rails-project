@@ -22,13 +22,13 @@
 
           <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                <%= link_to "Matchups", matchups_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= link_to "Join Matchup", matchups_join_path, class: "nav-link" %>
+              </li>
             <!-- filler for now, from last project -->
-              <li class="nav-item">
-                <a class="nav-link" href="/teams">Teams</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/stats">Stats</a>
-              </li>
               <li class="nav-item">
                 <a class="nav-link" href="/join">Join a Team</a>
               </li>

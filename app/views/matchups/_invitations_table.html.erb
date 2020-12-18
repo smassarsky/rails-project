@@ -1,0 +1,25 @@
+<div class="row justify-content-center my-3">
+  <h3>Pending Invitations</h3>
+</div>
+
+
+<table class="table">
+  <thead>
+    <th>Name</th>
+    <% if owner?(matchup) %>
+      <th>Invitation Code</th>
+      <th>Actions</th>
+    <% end %>
+  </thead>
+  <tbody>
+    <% matchup.invitations.each do |invitation| %>
+      <tr>
+        <td><%= invitation.nickname.empty? ? "Player - No Nickname" : invitation.nickname %></td>
+        <% if owner?(matchup) %>
+          <td><%= invitation.code %></td>
+          <td><%= button_to "Remove", "/matchups/#{matchup.id}/invitations/#{invitation.id}", method: "delete" %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

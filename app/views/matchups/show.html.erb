@@ -1,0 +1,12 @@
+<%= render partial: 'details', locals: {matchup: @matchup} %>
+
+<%= render partial: 'controls', locals: {matchup: @matchup} if owner?(@matchup) %>
+
+<% if flash[:alert] %>
+  <div class="text-danger"><%= flash[:alert] %></div>
+<% end %>
+
+<%= render partial: 'users_table', locals: {matchup: @matchup} %>
+
+<%= render partial: 'invitations_table', locals: {matchup: @matchup} %>
+

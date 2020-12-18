@@ -9,4 +9,17 @@ Rails.application.routes.draw do
   post '/signup', to: 'users#create'
   get '/dashboard', to: 'sessions#dashboard'
 
+  get '/matchups/join', to: 'matchups#join'
+  post '/matchups/join', to: 'matchups#confirm', as: 'matchup_confirm'
+  post '/matchups/confirm', to: 'matchups#link_user', as: 'link_user_matchup'
+  delete '/matchups/:matchup_id/:id', to: 'matchups#remove_user_matchup', as: 'remove_user_matchup'
+
+  resources :matchups do 
+    resources :invitations, only: [:new, :create, :destroy]
+    get '/draft/start', to: 'matchups#draft_start', as: 'start_draft'
+    get '/draft', to: 'matchups#draft', as: 'draft'
+  end
+
+
+
 end

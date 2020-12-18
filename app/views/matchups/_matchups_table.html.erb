@@ -1,0 +1,34 @@
+<% if !matchups.empty? %>
+
+  <table class="table">
+
+    <thead>
+      <th>Name</th>
+      <th>Owner</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Picks</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </thead>
+
+    <tbody>
+      <% matchups.each do |matchup| %>
+        <td><%= matchup.name %></td>
+        <td><%= matchup.owner.name %></td>
+        <td><%= date_format(matchup.start_date) %></td>
+        <td><%= date_format(matchup.end_date) %></td>
+        <td>TODO</td>
+        <td><%= matchup.status%></td>
+        <td><%= link_to "Show", matchup_path(matchup), class: "btn btn-sm btn-primary" %></td>
+      <% end %>
+    </tbody>
+
+  </table>
+
+<% else %>
+  <div class="row justify-content-center">
+    <h4>No Matchups Yet</h4>
+  </div>
+
+<% end %>

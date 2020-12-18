@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_16_182102) do
+ActiveRecord::Schema.define(version: 2020_12_18_152735) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,26 @@ ActiveRecord::Schema.define(version: 2020_12_16_182102) do
     t.string "period"
   end
 
+  create_table "invitations", force: :cascade do |t|
+    t.integer "matchup_id"
+    t.string "code"
+    t.string "nickname"
+  end
+
+  create_table "matchups", force: :cascade do |t|
+    t.string "name"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.integer "owner_id"
+    t.integer "team_id"
+    t.string "status"
+  end
+
+  create_table "picks", force: :cascade do |t|
+    t.integer "user_matchup_id"
+    t.integer "player_id"
+  end
+
   create_table "players", force: :cascade do |t|
     t.integer "api_id"
     t.string "name"
@@ -60,6 +80,13 @@ ActiveRecord::Schema.define(version: 2020_12_16_182102) do
     t.string "division"
     t.string "conference"
     t.string "website"
+  end
+
+  create_table "user_matchups", force: :cascade do |t|
+    t.string "nickname"
+    t.integer "user_id"
+    t.integer "matchup_id"
+    t.integer "draft_order"
   end
 
   create_table "users", force: :cascade do |t|

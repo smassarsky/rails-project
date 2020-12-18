@@ -1,0 +1,14 @@
+<h3><%= @invitation.matchup.name %></h3>
+<h4>Start Date: <%= date_format(@invitation.matchup.start_date) %></h4>
+<h4>End Date: <%= date_format(@invitation.matchup.end_date) %></h4>
+<h4>Current Players: <%= @invitation.matchup.users_count %></h4>
+<h4>Pending Invitations: <%= @invitation.matchup.invitations_count %></h4>
+
+<h5>Make Invitation</h5>
+<%= form_for [@invitation.matchup, @invitation] do |f| %>
+  <div class="form-group">
+    <%= f.label :nickname %>
+    <%= f.text_field :nickname, class: "form-control", placeholder: "Nickname (optional)" %>
+  </div>
+  <%= f.submit class: "btn btn-primary" %>
+<% end %>

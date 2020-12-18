@@ -11,4 +11,9 @@ class Team < ApplicationRecord
   def games
     home_games.or(away_games)
   end
+
+  def full_team_name
+    "#{self.city} #{self.name}"
+  end
+
 end

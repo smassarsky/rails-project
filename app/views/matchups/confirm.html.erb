@@ -1,0 +1,4 @@
+<%= render partial: 'details', locals: {matchup: @matchup} %>
+
+<div>Join Matchup?</div>
+<%= button_to "Join", link_user_matchup_path, params: {code: @invitation.code}, class: "btn btn-primary" %>

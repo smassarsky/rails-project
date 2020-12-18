@@ -1,0 +1,31 @@
+<div class="row justify-content-center my-3">
+  <h3>Players</h3>
+  <% if owner?(matchup) %>
+    <div><%= link_to "Create Invitation", new_matchup_invitation_path(matchup), class: "btn btn-primary ml-3" %></div>
+  <% end %>
+</div>
+
+<table class="table">
+  <thead>
+    <th>Name</th>
+    <th>Picks</th>
+    <th>Draft Order</th>
+    <% if owner?(matchup) %>
+      <th>Actions</th>
+    <% end %>
+  </thead>
+  <tbody>
+    <% matchup.user_matchups.order('id').each do |user_matchup| %>
+      <tr>
+        <td><%= user_matchup.user.name %><%= " (#{user_matchup.nickname})" if user_matchup.nickname %></td>
+        <td>Picks</td>
+        <td><%= matchup.status != "Pre-Draft" ? user_matchup.draft_order + 1 : "TBD" %></td>
+        <% if owner?(matchup) %>
+          <td>
+            <%= button_to "Remove", remove_user_matchup_path(matchup, user_matchup), method: :delete, class: "btn btn-sm btn-primary" %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
