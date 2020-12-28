@@ -68,7 +68,7 @@ module FetcherServices
       uri = URI.parse("#{BASE_URL}/game/#{game.api_id}/feed/live")
       response = Net::HTTP.get_response(uri)
       game_hash = JSON.parse(response.body)
-      # build_teams(game, game_hash["liveData"]["boxscore"]["teams"])
+      build_teams(game, game_hash["liveData"]["boxscore"]["teams"])
       build_events(game, game_hash["liveData"]["plays"])
     end
 

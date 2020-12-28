@@ -2,6 +2,7 @@ class InvitationsController < ApplicationController
   before_action :require_login
   before_action :set_matchup
   before_action :only_owner
+  before_action :only_pre_draft
 
   def new
     if !@matchup.full?

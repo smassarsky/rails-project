@@ -16,8 +16,8 @@ Rails.application.routes.draw do
 
   resources :matchups do 
     resources :invitations, only: [:new, :create, :destroy]
-    get '/draft/start', to: 'matchups#draft_start', as: 'start_draft'
-    get '/draft', to: 'matchups#draft', as: 'draft'
+    get '/draft/start', to: 'matchups#start_draft', as: 'start_draft'
+    get '/draft-table', to: 'matchups#draft', as: 'draft_table'
   end
 
 

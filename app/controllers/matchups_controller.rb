@@ -1,7 +1,7 @@
 class MatchupsController < ApplicationController
   before_action :require_login
-  before_action :set_matchup, only: [:show, :edit, :update, :destroy, :remove_user_matchup, :draft_start]
-  before_action :only_owner, only: [:edit, :update, :destroy, :remove_user_matchup, :draft_start]
+  before_action :set_matchup, only: [:show, :edit, :update, :destroy, :remove_user_matchup, :start_draft]
+  before_action :only_owner, only: [:edit, :update, :destroy, :remove_user_matchup, :start_draft]
   before_action :only_users, only: [:show]
   before_action :only_pre_draft, only: [:edit, :update, :remove_user_matchup]
 
@@ -19,7 +19,7 @@ class MatchupsController < ApplicationController
     if @matchup.save
       @matchup.users << current_user
       @matchup.save
-      redirect_to matchup_path(@matchup)
+      redirect_to @matchup
     else
       render :new
     end
@@ -33,7 +33,7 @@ class MatchupsController < ApplicationController
 
   def update
     if @matchup.update(matchup_params)
-      redirect_to matchup_path(@matchup)
+      redirect_to @matchup
     else
       render :edit
     end
@@ -44,14 +44,11 @@ class MatchupsController < ApplicationController
     redirect_to matchups_path
   end
 
-  def draft_start
-    if @matchup.users_count > 1
-      delete_extra_invitations
-      @matchup.update(status: "Draft")
-      set_draft_order
-      redirect_to matchup_path(@matchup)
+  def start_draft
+    if @matchup.start_draft
+      redirect_to @matchup
     else
-      redirect_to matchup_path(@matchup), alert: "Not enough players"
+      redirect_to @matchup, alert: "Not enough players"
     end
   end
 
@@ -75,7 +72,7 @@ class MatchupsController < ApplicationController
         @matchup.user_matchups.build(user: current_user, nickname: @invitation.nickname.empty? || @invitation.nickname == current_user.name ? nil : @invitation.nickname)
         @matchup.save
         @invitation.destroy
-        redirect_to matchup_path(@matchup)
+        redirect_to @matchup
       else
         render :join, alert: "You've already joined that matchup"
       end
@@ -86,9 +83,9 @@ class MatchupsController < ApplicationController
     user_matchup = UserMatchup.find_by(id: params[:id])
     if user_matchup && user_matchup.user != current_user
       user_matchup.destroy
-      redirect_to matchup_path(@matchup)
+      redirect_to @matchup
     else
-      redirect_to matchup_path(@matchup), alert: "Invalid User"
+      redirect_to @matchup, alert: "Invalid User"
     end
   end
 
@@ -113,16 +110,6 @@ class MatchupsController < ApplicationController
 
   def only_users
     redirect_to matchups_path, alert: "You can't do that" if !@matchup.users.include?(current_user)
-  end
-
-  def delete_extra_invitations
-    @matchup.invitations.destroy_all
-  end
-
-  def set_draft_order
-    @matchup.user_matchups.order('random()').each_with_index do |usermatchup, index|
-      usermatchup.update(draft_order: index)
-    end
   end
 
 end

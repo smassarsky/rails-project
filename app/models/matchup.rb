@@ -38,6 +38,25 @@ class Matchup < ApplicationRecord
     potential_users_count > 3
   end
 
+  def start_draft
+    if self.users_count > 1
+      delete_extra_invitations
+      self.update(status: "Draft")
+      set_draft_order
+    else
+      false
+    end
+  end
+
+  # this ought to be changed at some point so the tz offset isn't hardcoded for est
+  def related_games
+    self.team.games.where("datetime >= ? AND datetime <= ?", self.start_date, self.end_date + 1.day + 5.hours)
+  end
+
+  def related_players
+    Player.joins(:game_players).where(game_players: {team: self.team, game: self.related_games}).distinct
+  end
+
   private
 
   def dates
@@ -49,13 +68,31 @@ class Matchup < ApplicationRecord
   end
 
   def def_status
-    if self.status.nil?
-      self.status = "Pre-Draft"
-    end
+    self.status = "Pre-Draft" if self.status.nil?
   end
 
   def set_draft_order
-
+    self.user_matchups.order('random()').each_with_index do |usermatchup, index|
+      usermatchup.update(draft_order: index)
+    end
   end
+
+  def delete_extra_invitations
+    self.invitations.destroy_all
+  end
+
+  def num_of_picks
+    self.picks.count
+  end
+
+  def whose_pick?
+    self.user_matchups.find_by(draft_order: num_of_picks % users_count)
+  end
+
+  def max_picks
+    users_count * 4
+  end
+
+
 
 end

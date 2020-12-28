@@ -28,14 +28,18 @@ ActiveRecord::Schema.define(version: 2020_12_18_152735) do
     t.integer "jersey_num"
   end
 
+  create_table "game_teams", force: :cascade do |t|
+    t.integer "game_id"
+    t.integer "team_id"
+    t.string "home_away"
+  end
+
   create_table "games", force: :cascade do |t|
     t.integer "api_id"
     t.datetime "datetime"
     t.string "game_type"
     t.string "season"
     t.string "status"
-    t.integer "home_team_id"
-    t.integer "away_team_id"
   end
 
   create_table "goals", force: :cascade do |t|

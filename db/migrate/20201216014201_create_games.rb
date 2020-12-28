@@ -7,8 +7,12 @@ class CreateGames < ActiveRecord::Migration[6.0]
       t.string :game_type
       t.string :season
       t.string :status
-      t.integer :home_team_id
-      t.integer :away_team_id
+    end
+
+    create_table :game_teams do |t|
+      t.integer :game_id
+      t.integer :team_id
+      t.string :home_away
     end
 
     create_table :players do |t|
