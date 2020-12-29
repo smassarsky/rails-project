@@ -14,13 +14,15 @@
 
     <tbody>
       <% matchups.each do |matchup| %>
-        <td><%= matchup.name %></td>
-        <td><%= matchup.owner.name %></td>
-        <td><%= date_format(matchup.start_date) %></td>
-        <td><%= date_format(matchup.end_date) %></td>
-        <td>TODO</td>
-        <td><%= matchup.status%></td>
-        <td><%= link_to "Show", matchup, class: "btn btn-sm btn-primary" %></td>
+        <tr>
+          <td><%= matchup.name %></td>
+          <td><%= matchup.owner.name %></td>
+          <td><%= date_format(matchup.start_date) %></td>
+          <td><%= date_format(matchup.end_date) %></td>
+          <td>TODO</td>
+          <td><%= matchup.status%></td>
+          <td><%= link_to "Show", matchup, class: "btn btn-sm btn-primary" %></td>
+        </tr>
       <% end %>
     </tbody>
 

@@ -12,6 +12,15 @@ module ApplicationHelper
     date.strftime("%B %e, %Y")
   end
 
+  def date_time_format(datetime)
+    (datetime + tz_offset.hours).strftime("%B %e, %Y at %I:%M %p")
+  end
+
+  # change hard coding tz offset at some point
+  def tz_offset
+    -5
+  end
+
   def owner?(thing)
     thing.owner == current_user
   end

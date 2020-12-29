@@ -1,0 +1,25 @@
+<div class="my-3 text-center">
+  <h3>Available Picks</h3>
+  <table class="table">
+
+    <thead>
+      <th>Name</th>
+      <th>Jersey</th>
+      <th>Position</th>
+      <th>Season Stats</th>
+    </thead>
+    <tbody>
+      <% matchup.available_players.each do |player| %>
+        <tr>
+          <td><%= player.name %></td>
+          <td>jersey todo</td>
+          <td><%= player.position_in_games(matchup.related_games) %></td>
+          <td>stats todo</td>
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
+
+
+</div>

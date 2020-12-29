@@ -1,0 +1,29 @@
+<div class="mt-3 text-center">
+
+  <h3>Games</h3>
+
+  <table class="table">
+
+    <thead>
+      <th>#</th>
+      <th>Date</th>
+      <th>Opponent</th>
+      <th>Status</th>
+      <th>Score</th>
+    </thead>
+
+    <tbody>
+      <% matchup.related_games.each_with_index do |game, index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= date_time_format(game.datetime) %></td>
+          <td><%= game.opponent(matchup.team).full_team_name %></td>
+          <td><%= game.status %></td>
+          <td><%= game.win_loss_score(matchup.team) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
+
+</div>

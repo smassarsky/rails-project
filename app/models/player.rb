@@ -8,4 +8,11 @@ class Player < ApplicationRecord
 
   validates_presence_of :name
   validates_uniqueness_of :name
+
+  def position_in_games(games)
+    self.game_players.where(game: games).select(:position).distinct
+  end
+
+  # Player.joins(:game_players).where(game_players: {team: self.team, game: self.related_games}).distinct
+
 end

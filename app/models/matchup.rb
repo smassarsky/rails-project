@@ -57,6 +57,14 @@ class Matchup < ApplicationRecord
     Player.joins(:game_players).where(game_players: {team: self.team, game: self.related_games}).distinct
   end
 
+  def available_players
+    self.related_players - self.picks
+  end
+
+  def user_picks(user)
+    self.user_matchups.find_by(user: user).picks
+  end
+
   private
 
   def dates

@@ -1,0 +1,11 @@
+<div class="my-3">
+
+  <div class="row row-cols-2 row-cols-lg-4 g-2 g-lg-3">
+    <% @matchup.users.each do |user| %>
+      <%= render partial: "user_card", locals: { matchup: @matchup, user: user } %>
+    <% end %>
+  </div>
+
+  <%= render partial: "players_table", locals: { matchup: @matchup } %>
+
+</div>
