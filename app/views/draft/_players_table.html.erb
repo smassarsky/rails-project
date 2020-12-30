@@ -1,4 +1,6 @@
 <div class="my-3 text-center">
+
+  <h3><%= next_pick_header(matchup) %></h3>
   <h3>Available Picks</h3>
   <table class="table">
 
@@ -7,14 +9,20 @@
       <th>Jersey</th>
       <th>Position</th>
       <th>Season Stats</th>
+      <% if my_pick?(matchup) %>
+        <th>Actions</th>
+      <% end %>
     </thead>
     <tbody>
       <% matchup.available_players.each do |player| %>
         <tr>
           <td><%= player.name %></td>
-          <td>jersey todo</td>
+          <td><%= player.jersey_in_games(matchup.related_games) %></td>
           <td><%= player.position_in_games(matchup.related_games) %></td>
-          <td>stats todo</td>
+          <td><%= player.regular_season_stats(matchup.season) %></td>
+          <% if my_pick?(matchup) %>
+            <td><%= button_to "Pick", matchup_picks_path(matchup), params: { player_id: player.id } %></td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>

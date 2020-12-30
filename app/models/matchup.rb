@@ -48,6 +48,10 @@ class Matchup < ApplicationRecord
     end
   end
 
+  def end_draft
+    self.update(status: "Active")
+  end
+
   # this ought to be changed at some point so the tz offset isn't hardcoded for est
   def related_games
     self.team.games.where("datetime >= ? AND datetime <= ?", self.start_date, self.end_date + 1.day + 5.hours)
@@ -58,11 +62,31 @@ class Matchup < ApplicationRecord
   end
 
   def available_players
-    self.related_players - self.picks
+    self.related_players - self.players
   end
 
   def user_picks(user)
     self.user_matchups.find_by(user: user).picks
+  end
+
+  def season
+    self.related_games.first.season
+  end
+
+  def whose_pick?
+    self.user_matchups.find_by(draft_order: num_of_picks % users_count)
+  end
+
+  def draft_done?
+    self.num_of_picks == self.max_picks
+  end
+
+  def num_of_picks
+    self.picks.count
+  end
+
+  def max_picks
+    users_count * 4
   end
 
   private
@@ -89,17 +113,7 @@ class Matchup < ApplicationRecord
     self.invitations.destroy_all
   end
 
-  def num_of_picks
-    self.picks.count
-  end
 
-  def whose_pick?
-    self.user_matchups.find_by(draft_order: num_of_picks % users_count)
-  end
-
-  def max_picks
-    users_count * 4
-  end
 
 
 
