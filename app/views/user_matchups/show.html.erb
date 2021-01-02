@@ -1,0 +1,7 @@
+<%= render partial: 'user_details', locals: {user_matchup: @user_matchup} %>
+
+<div class="row mt-3">
+  <%= render partial: 'goal_details', locals: {user_matchup: @user_matchup} %>
+
+  <%= render partial: 'assist_details', locals: {user_matchup: @user_matchup} %>
+</div>

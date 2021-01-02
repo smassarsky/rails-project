@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_18_152735) do
+ActiveRecord::Schema.define(version: 2021_01_02_063010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,8 @@ ActiveRecord::Schema.define(version: 2020_12_18_152735) do
     t.integer "api_id"
     t.string "time"
     t.string "period"
+    t.string "video_url"
+    t.integer "video_id"
   end
 
   create_table "invitations", force: :cascade do |t|

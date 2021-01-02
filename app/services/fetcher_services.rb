@@ -34,15 +34,15 @@ module FetcherServices
     BASE_URL = 'https://statsapi.web.nhl.com/api/v1/'
 
     def self.fetch_season_games(season)
-      uri = URI.parse("#{BASE_URL}/schedule?season=#{season}")
-      response = Net::HTTP.get_response(uri)
-      season_hash = JSON.parse(response.body)
+      # uri = URI.parse("#{BASE_URL}/schedule?season=#{season}")
+      # response = Net::HTTP.get_response(uri)
+      # season_hash = JSON.parse(response.body)
 
-      season_hash["dates"].each do |date|
-        date["games"].each do |game|
-          build_game(game)
-        end
-      end
+      # season_hash["dates"].each do |date|
+      #   date["games"].each do |game|
+      #     build_game(game)
+      #   end
+      # end
 
       Game.all.each do |game|
         build_game_events_and_players(game)
@@ -68,8 +68,13 @@ module FetcherServices
       uri = URI.parse("#{BASE_URL}/game/#{game.api_id}/feed/live")
       response = Net::HTTP.get_response(uri)
       game_hash = JSON.parse(response.body)
-      build_teams(game, game_hash["liveData"]["boxscore"]["teams"])
-      build_events(game, game_hash["liveData"]["plays"])
+
+      #build_teams(game, game_hash["liveData"]["boxscore"]["teams"])
+      #build_events(game, game_hash["liveData"]["plays"])
+
+      # fix for adding video ids
+
+      #add_video_ids(game, game_hash["liveData"]["plays"])
     end
 
     # full play details: game_hash["liveData"]["plays"]["allPlays"]
@@ -145,6 +150,53 @@ module FetcherServices
       end
     end
 
+    def self.add_video_ids(game, plays_hash)
+      event_codes = game.goals.select(:api_id).map{|goal| goal[:api_id]}
+      event_codes.each do |event_code|
+        goal = game.goals.find_by(api_id: event_code)
+        goal.update(video_id: plays_hash["allPlays"][event_code]["about"]["eventId"])
+      end
+    end
+
+    def self.fetch_videos
+      Game.all.each do |game|
+        uri = URI.parse("#{BASE_URL}/game/#{game.api_id}/content")
+        response = Net::HTTP.get_response(uri)
+        game_content_hash = JSON.parse(response.body)
+
+        event_codes = game.goals.select(:video_id).map{|goal| goal[:video_id]}
+
+        if game_content_hash["media"]["milestones"]["items"]
+          goals_hash = game_content_hash["media"]["milestones"]["items"].select{|item| item["type"] == "GOAL"}
+          if !goals_hash.empty?
+            goals_hash.each do |possible_goal|
+              if event_codes.include?(possible_goal["statsEventId"].to_i)
+                if possible_goal["highlight"]["playbacks"]
+                  if possible_goal["highlight"]["playbacks"].last["name"] == "FLASH_1800K_960X540"
+                    goal = game.goals.find_by(video_id: possible_goal["statsEventId"].to_i)
+                    goal.update(video_url: possible_goal["highlight"]["playbacks"].last["url"])
+                  end
+                end
+              end
+            end
+          end
+        end
+
+        
+      end
+    end
+
   end
   
 end
+
+# #{BASE_URL}/game/#{game.api_id}/content (for videos)
+# game_content_hash["media"]["milestones"]["items"].select{|item| item["type"] == "GOAL"} (select goals)
+# problem: event ids dont match video event ids
+# 18 : 15
+# 64 : 40
+# 86 : 254
+# 175 : 457
+# 215 : 486
+# 218 : 488
+# 269 : 661

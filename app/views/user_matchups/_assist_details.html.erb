@@ -1,0 +1,34 @@
+<div class="col-lg-6">
+  <div class="card mb-3">
+    <div class="card-body">
+      <h4 class="card-title text-center">Assists</h4>
+      <table class="table mb-0">
+        <thead>
+          <th>Player</th>
+          <th>Date</th>
+          <th>Period</th>
+          <th>Time</th>
+          <th>Video</th>
+        </thead>
+        <tbody>
+          <% user_matchup.assists.joins(:game).order("games.datetime ASC", "goals.period ASC", "goals.time ASC").each do |assist| %>
+            <tr>
+              <td><%= assist.player.name %></td>
+              <td><%= date_format(assist.game.datetime) %></td>
+              <td><%= assist.goal.period %></td>
+              <td><%= assist.goal.time %></td>
+              <td>
+                <% if assist.goal.has_video? %>
+                  <%= link_to assist.goal.video_url, class: "btn btn-primary" do %>
+                    <%= "Video".html_safe %>
+                    <%= fas_icon "play" %>
+                  <% end %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

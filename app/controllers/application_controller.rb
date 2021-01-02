@@ -44,5 +44,4 @@ class ApplicationController < ActionController::Base
     redirect_to matchup_path(@matchup), alert: "You can't do that" if !owner?(@matchup)
   end
 
-
 end

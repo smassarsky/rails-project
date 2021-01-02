@@ -9,7 +9,7 @@ module ApplicationHelper
   end
 
   def date_format(date)
-    date.strftime("%B %e, %Y")
+    date.strftime("%b %e, %Y")
   end
 
   def date_time_format(datetime)

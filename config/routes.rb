@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     get '/draft/start', to: 'matchups#start_draft', as: 'start_draft'
     get '/draft-table', to: 'draft#draft_table', as: 'draft_table'
     resources :picks, only: [:create]
+    resources :user_matchups, only: [:show]
   end
 
 end
