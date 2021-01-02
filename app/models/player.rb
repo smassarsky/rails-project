@@ -19,19 +19,26 @@ class Player < ApplicationRecord
 
   def regular_season_stats(season)
     games = self.games.where(season: season, game_type: "R")
-    "#{games.count} GP | #{self.points_in_games(games)} P | #{self.goals_in_games(games)} G | #{self.assists_in_games(games)} A"
+    "#{games.count} GP | #{self.points_in_games(games).count} P | #{self.goals_in_games(games).count} G | #{self.assists_in_games(games).count} A"
   end
 
-  # def games_played(games)
-  #   games.count
-  # end
+  def regular_season_stats_hash(season)
+    games = self.games.where(season: season, game_type: "R")
+    stats = {
+      games_played: games.count,
+      goals: self.goals_in_games(games).count,
+      assists: self.assists_in_games(games).count
+    }
+    stats[:points] = stats[:goals] + stats[:assists]
+    stats
+  end
 
   def goals_in_games(games)
-    self.goals.where(game: games).count
+    self.goals.where(game: games)
   end
 
   def assists_in_games(games)
-    self.assists.joins(:goal).where(goals: {game: games}).count
+    self.assists.joins(:goal).where(goals: {game: games})
   end
 
   def points_in_games(games)

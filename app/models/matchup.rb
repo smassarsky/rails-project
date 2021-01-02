@@ -17,6 +17,16 @@ class Matchup < ApplicationRecord
 
   before_validation :def_status
 
+  # save and update overwrites set status to complete if status is Active and all game statuses are Final
+  def save
+    check_complete
+    super
+  end
+
+  def update(args)
+    check_complete
+    super
+  end
 
   def team_name
     self.team.name
@@ -65,7 +75,7 @@ class Matchup < ApplicationRecord
     self.related_players - self.players
   end
 
-  def user_picks(user)
+  def user_matchup_picks(user_matchup)
     self.user_matchups.find_by(user: user).picks
   end
 
@@ -89,10 +99,27 @@ class Matchup < ApplicationRecord
     users_count * 4
   end
 
+  def check_complete
+    if self.status == "Active" && self.games.none?{|game| game.status != "Final"}
+      self.status = "Complete"
+    end
+  end
+
+  def is_active_or_complete?
+    %w[Active Complete].include?(self.status)
+  end
+
+  def is_pre_draft?
+    self.status == "Pre-Draft"
+  end
+
+  def winner
+    self.user_matchups.max{|user_matchup| user_matchup.total_points}
+  end
+
   private
 
   def dates
-
     if start_date >= end_date
       errors.add(:start_date, "Must be before end date.")
       errors.add(:end_date, "Must be after start date.")

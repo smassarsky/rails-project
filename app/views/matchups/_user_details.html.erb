@@ -1,0 +1,30 @@
+<% if matchup.is_active_or_complete? %>
+
+  <%= render partial: 'user_detail_cards', locals: {matchup: matchup} %>
+
+<% elsif matchup.is_pre_draft? %>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card mb-3">
+        <div class="card-body">
+          <%= render partial: 'users_table', locals: {matchup: matchup} %>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card mb-3">
+        <div class="card-body">
+          <%= render partial: 'invitations_table', locals: {matchup: matchup} %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<% else %>
+  <%= render partial: 'draft/user_cards', locals: {matchup: matchup} %>
+<% end %>
+
+
+
+

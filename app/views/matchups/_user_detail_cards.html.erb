@@ -1,0 +1,40 @@
+<div class="row">
+    <% matchup.user_matchups.each do |user_matchup| %>
+    <div class="col-lg-6">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h4 class="card-title text-center"><%= user_matchup.display_name %></h4>
+          <% if !user_matchup.picks.empty? %>
+            <table class="table mb-0">
+              <thead>
+                <th>Player</th>
+                <th>Games Played</th>
+                <th>Points</th>
+                <th>Goals</th>
+                <th>Assists</th>
+              </thead>
+              <tbody>
+                <% user_matchup.picks.each do |pick| %>
+                  <% stats = pick.stats_in_matchup %>
+                  <tr>
+                    <td><%= pick.player.name %></td>
+                    <td><%= stats[:games_played] %></td>
+                    <td><%= stats[:points] %></td>
+                    <td><%= stats[:goals] %></td>
+                    <td><%= stats[:assists] %></td>
+                  </tr>
+                <% end %>
+                  <tr>
+                    <th colspan="2">Total Points</th>
+                    <td colspan="3"><%= user_matchup.total_points %></td>
+                  </tr>
+              </tbody>
+            </table>
+          <% else %>
+            <h5>No picks yet.<h5>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

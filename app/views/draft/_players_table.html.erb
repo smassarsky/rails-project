@@ -1,4 +1,4 @@
-<div class="my-3 text-center">
+<div class="mb-3 text-center">
 
   <h3><%= next_pick_header(matchup) %></h3>
   <h3>Available Picks</h3>
@@ -21,7 +21,7 @@
           <td><%= player.position_in_games(matchup.related_games) %></td>
           <td><%= player.regular_season_stats(matchup.season) %></td>
           <% if my_pick?(matchup) %>
-            <td><%= button_to "Pick", matchup_picks_path(matchup), params: { player_id: player.id } %></td>
+            <td><%= button_to "Pick", matchup_picks_path(matchup), params: { player_id: player.id }, class: "btn btn-primary" %></td>
           <% end %>
         </tr>
       <% end %>

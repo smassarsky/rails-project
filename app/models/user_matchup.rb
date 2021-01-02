@@ -7,4 +7,8 @@ class UserMatchup < ApplicationRecord
     "#{self.user.name}#{" (#{self.nickname})" if self.nickname}"
   end
 
+  def total_points
+    self.picks.sum{|pick| pick.points}
+  end
+
 end

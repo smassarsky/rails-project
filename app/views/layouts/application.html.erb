@@ -28,11 +28,10 @@
               <li class="nav-item">
                 <%= link_to "Join Matchup", matchups_join_path, class: "nav-link" %>
               </li>
-            <!-- filler for now, from last project -->
-              <li class="nav-item">
-                <a class="nav-link" href="/join">Join a Team</a>
-              </li>
             </ul>
+            <span class="navbar-text">
+              Hi, <%= current_user.name %>
+            </span>
             <ul class="navbar-nav px-3">
               <li class="nav-item text-nowrap">
                 <%= link_to "Logout", logout_path, method: :delete, class: "nav-link" %>
