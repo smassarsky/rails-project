@@ -10,20 +10,6 @@ class ApplicationController < ActionController::Base
     !!session[:user_id]
   end
 
-  def log_in(user)
-    session[:user_id] = user.id
-  end
-
-  def log_out
-    session.clear
-    redirect_to root_path
-  end
-
-  def valid_creds?
-    @user = User.find_by(email: params[:user][:email])
-    !!@user && @user.authenticate(params[:user][:password])
-  end
-
   def require_login
     redirect_to login_path unless session.include? :user_id
   end

@@ -1,0 +1,6 @@
+<%= form_for [user_matchup.matchup, user_matchup] do |f| %>
+  <%= f.label :nickname %>
+  <%= f.text_field :nickname, placeholder: "Nickname (Optional)" %>
+
+  <%= f.submit %>
+<% end %>

@@ -2,24 +2,32 @@
   <h3>Pending Invitations</h3>
 </div>
 
-
-<table class="table text-center">
-  <thead>
-    <th>Name</th>
-    <% if owner?(matchup) %>
-      <th>Invitation Code</th>
-      <th>Actions</th>
-    <% end %>
-  </thead>
-  <tbody>
-    <% matchup.invitations.each do |invitation| %>
-      <tr>
-        <td><%= invitation.nickname.empty? ? "Player - No Nickname" : invitation.nickname %></td>
-        <% if owner?(matchup) %>
-          <td><%= invitation.code %></td>
-          <td><%= button_to "Remove", "/matchups/#{matchup.id}/invitations/#{invitation.id}", method: "delete" %></td>
-        <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<% if matchup.invitations.empty? %>
+  <h5 class="text-center">No Invitations</h5>
+<% else %>
+  <table class="table text-center">
+    <thead>
+      <th>Name</th>
+      <% if owner?(matchup) %>
+        <th>Invitation Code</th>
+        <th>Actions</th>
+      <% end %>
+    </thead>
+    <tbody>
+      <% matchup.invitations.each do |invitation| %>
+        <tr>
+          <td><%= invitation.nickname.nil? ? "Player - No Nickname" : invitation.nickname %></td>
+          <% if owner?(matchup) %>
+            <td><%= invitation.code %></td>
+            <td>
+              <div class="row justify-content-center">
+                <%= link_to "Change Nickname", edit_matchup_invitation_path(matchup, invitation), class: "btn btn-sm btn-primary mr-3" %>
+                <%= button_to "Remove", "/matchups/#{matchup.id}/invitations/#{invitation.id}", method: "delete", class: "btn btn-sm btn-danger" %>
+              </div>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

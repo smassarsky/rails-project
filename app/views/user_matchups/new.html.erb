@@ -1,0 +1,10 @@
+<h2>Join a Matchup</h2>
+
+<span><%= render partial: 'layouts/flash_messages' %></span>
+
+<%= form_for :invitation, url: confirm_user_matchup_path do |f| %>
+  <%= f.label :code %>
+  <%= f.text_field :code %>
+
+  <%= f.submit "Join Matchup" %>
+<% end %>

@@ -8,24 +8,20 @@
 <table class="table text-center">
   <thead>
     <th>Name</th>
-    <th>Picks</th>
-    <th>Draft Order</th>
-    <% if owner?(matchup) %>
-      <th>Actions</th>
-    <% end %>
+    <th>Actions</th>
   </thead>
   <tbody>
     <% matchup.user_matchups.order('id').each do |user_matchup| %>
       <tr>
-        <td><%= user_matchup.user.name %><%= " (#{user_matchup.nickname})" if user_matchup.nickname %></td>
-        <td>Picks</td>
-        <td><%= matchup.status != "Pre-Draft" ? user_matchup.draft_order + 1 : "TBD" %></td>
-        <% if owner?(matchup) %>
-          <td>
-            <%= link_to "Change Nickname(TODO)" %>
-            <%= button_to "Remove", remove_user_matchup_path(matchup, user_matchup), method: :delete, class: "btn btn-sm btn-primary" if matchup.status == "Pre-Draft" %>
-          </td>
-        <% end %>
+        <td><%= user_matchup.display_name %></td>
+        <td>
+          <div class="row justify-content-center">
+          <% if user_matchup.owner_or_user?(current_user) %>
+            <%= link_to "Change Nickname", edit_matchup_user_matchup_path(matchup, user_matchup), class: "btn btn-sm btn-primary mr-3" %>
+            <%= button_to "Remove", matchup_user_matchup_path(matchup, user_matchup), method: :delete, class: "btn btn-sm btn-danger" if matchup.is_pre_draft? %>
+          <% end %>
+          </div>
+        </td>
       </tr>
     <% end %>
   </tbody>

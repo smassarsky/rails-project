@@ -10,11 +10,23 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if valid_creds?
-      log_in(@user)
+    # google login
+    if params[:provider]
+      @user = User.find_or_create_by(email: auth[:extra][:id_info][:email]) do |u|
+        u.name = auth[:extra][:id_info][:given_name]
+        u.password = u.password_confirmation = SecureRandom.urlsafe_base64
+      end
+      log_in
       redirect_to dashboard_path
+
+    # regular login
     else
-      redirect_to login_path, alert: "Invalid Credentials"
+      if valid_creds?
+        log_in
+        redirect_to dashboard_path
+      else
+        redirect_to login_path, alert: "Invalid Credentials"
+      end
     end
   end
 
@@ -24,6 +36,26 @@ class SessionsController < ApplicationController
 
   def dashboard
     current_user
+  end
+
+  private
+
+  def valid_creds?
+    @user = User.find_by(email: params[:user][:email])
+    !!@user && @user.authenticate(params[:user][:password])
+  end
+
+  def log_in
+    session[:user_id] = @user.id
+  end
+
+  def log_out
+    session.clear
+    redirect_to root_path
+  end
+
+  def auth
+    request.env['omniauth.auth']
   end
 
 end

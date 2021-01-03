@@ -1,1 +1,44 @@
-<h2><%= "Welcome, #{@user.name}!" %></h2>
+<div class="row my-3">
+  <div class="col-lg-6">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h4 class="card-title text-center">Requires Action</h4>
+        <%= render partial: 'matchups/matchups_table', locals: {matchups: @user.matchups_requiring_action} %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h4 class="card-title text-center">Active Matchups</h4>
+        <%= render partial: 'matchups/matchups_table', locals: {matchups: @user.active_matchups} %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mb-3">
+  <div class="col-lg-6">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h4 class="card-title text-center">Recent Picks</h4>
+        <%= render partial: 'picks/table', locals: {picks: @user.recent_picks} %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h4 class="card-title text-center">Best Picks</h4>
+
+        <%= render partial: 'picks/table', locals: {picks: @user.best_picks} %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

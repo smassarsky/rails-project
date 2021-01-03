@@ -1,3 +1,11 @@
 <%= render partial: 'form' %>
 
+<div class="text-center">Or</div>
+
+<div class="row justify-content-center">
+  <%= link_to "/auth/google_oauth2" do %>
+    <%= image_tag 'google/signin_button' %>
+  <% end %>
+</div>
+
 <%= stylesheet_link_tag "prelogin", media: "all", "data-turbolinks-track" => "reload" %>

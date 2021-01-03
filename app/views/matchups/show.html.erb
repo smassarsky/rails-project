@@ -2,17 +2,8 @@
 
 <%= render partial: 'controls', locals: {matchup: @matchup} %>
 
-<% if flash[:alert] %>
-  <div class="text-danger"><%= flash[:alert] %></div>
-<% end %>
+<%= render partial: 'layouts/flash_messages' %>
 
 <%= render partial: 'user_details', locals: {matchup: @matchup} %>
 
-
-
 <%= render partial: 'games_table', locals: {matchup: @matchup} %>
-
-<%= render partial: 'users_table', locals: {matchup: @matchup} if @matchup.is_pre_draft? %>
-
-<%= render partial: 'invitations_table', locals: {matchup: @matchup} if !@matchup.invitations.empty?%>
-

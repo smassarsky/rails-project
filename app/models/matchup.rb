@@ -17,7 +17,7 @@ class Matchup < ApplicationRecord
 
   before_validation :def_status
 
-  # save and update overwrites set status to complete if status is Active and all game statuses are Final
+  # save and update overwrites status to complete if status is Active and all game statuses are Final
   def save
     check_complete
     super

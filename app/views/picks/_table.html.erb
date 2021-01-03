@@ -1,0 +1,25 @@
+<table class="table">
+  <thead>
+    <th>Player</th>
+    <th>Matchup</th>
+    <th>Games Played</th>
+    <th>Points</th>
+    <th>Goals</th>
+    <th>Assists</th>
+  </thead>
+  <tbody>
+    <% picks.each do |pick| %>
+      <tr>
+        <% stats = pick.stats_in_matchup %>
+        <td><%= pick.player.name %></td>
+        <td><%= pick.matchup.name %></td>
+        <td><%= stats[:games_played] %></td>
+        <td><%= stats[:points] %></td>
+        <td><%= stats[:goals] %></td>
+        <td><%= stats[:assists] %></td>
+      </tr>
+    <% end %>
+
+  </tbody>
+</table>
+
