@@ -30,7 +30,7 @@ class UserMatchup < ApplicationRecord
   private
 
   def nickname_nil_if_empty
-    self.nickname = nil if self.nickname.empty?
+    self.nickname = nil if self.nickname == ""
   end
 
 end

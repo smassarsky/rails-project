@@ -14,11 +14,11 @@ class UserMatchupsController < ApplicationController
   end
 
   def confirm
-    set_invitation_and_checks
+    set_invitation_and_checks(params[:invitation][:code])
   end
 
   def create
-    set_invitation_and_checks
+    set_invitation_and_checks(params[:code])
     @matchup = @invitation.matchup
     @matchup.user_matchups.build(user: current_user, nickname: @invitation.nickname == current_user.name ? nil : @invitation.nickname)
     @matchup.save
@@ -66,8 +66,9 @@ class UserMatchupsController < ApplicationController
     redirect_to @matchup, alert: "Can't remove users after draft has started." if !@matchup.is_pre_draft?
   end
 
-  def set_invitation_and_checks
-    @invitation = Invitation.find_by(code: params[:invitation][:code])
+  def set_invitation_and_checks(code)
+    byebug
+    @invitation = Invitation.find_by(code: code)
     redirect_to new_user_matchup_path, alert: "Invalid invitation" and return if @invitation.nil?
     redirect_to new_user_matchup_path, alert: "You've already joined that matchup" and return if @invitation.matchup.users.include?(current_user)
   end

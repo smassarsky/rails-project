@@ -15,12 +15,14 @@
               </thead>
               <tbody>
                 <% user_matchup.picks.each do |pick| %>
-                  <% stats = pick.player.regular_season_stats_hash(matchup.season) %>
-                  <td><%= pick.player.name %></td>
-                  <td><%= stats[:games_played] %></td>
-                  <td><%= stats[:points] %></td>
-                  <td><%= stats[:goals] %></td>
-                  <td><%= stats[:assists] %></td>
+                  <tr>
+                    <% stats = pick.player.regular_season_stats_hash(matchup.season) %>
+                    <td><%= pick.player.name %></td>
+                    <td><%= stats[:games_played] %></td>
+                    <td><%= stats[:points] %></td>
+                    <td><%= stats[:goals] %></td>
+                    <td><%= stats[:assists] %></td>
+                  </tr>
                 <% end %>
               </tbody>
             </table>
