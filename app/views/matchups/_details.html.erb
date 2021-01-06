@@ -14,6 +14,11 @@
     <p class="col-md-2 text-center">Status: <%= matchup.status %></p>
   </div>
   <% if matchup.status == "Complete" %>
-    <h6>Winner: <%= matchup.winner.display_name %></h6>
+    <h6><%= matchup.winner %></h6>
+  <% elsif matchup.status == "Draft" %>
+    <h6>Draft Order</h6>
+    <p><%= matchup.draft_order %></p>
+    <h6>Next Pick</h6>
+    <p><%= matchup.whose_pick?.display_name %></p>
   <% end %>
 </div>

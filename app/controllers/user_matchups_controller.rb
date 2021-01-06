@@ -67,7 +67,6 @@ class UserMatchupsController < ApplicationController
   end
 
   def set_invitation_and_checks(code)
-    byebug
     @invitation = Invitation.find_by(code: code)
     redirect_to new_user_matchup_path, alert: "Invalid invitation" and return if @invitation.nil?
     redirect_to new_user_matchup_path, alert: "You've already joined that matchup" and return if @invitation.matchup.users.include?(current_user)

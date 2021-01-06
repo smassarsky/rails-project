@@ -8,7 +8,10 @@
       <th>Name</th>
       <th>Jersey</th>
       <th>Position</th>
-      <th>Season Stats</th>
+      <th>Games Played</th>
+      <th>Points</th>
+      <th>Goals</th>
+      <th>Assists</th>
       <% if my_pick?(matchup) %>
         <th>Actions</th>
       <% end %>
@@ -16,18 +19,21 @@
     <tbody>
       <% matchup.available_players.each do |player| %>
         <tr>
+          <% stats = player.regular_season_stats_hash(matchup.season) %>
           <td><%= player.name %></td>
           <td><%= player.jersey_in_games(matchup.related_games) %></td>
           <td><%= player.position_in_games(matchup.related_games) %></td>
-          <td><%= player.regular_season_stats(matchup.season) %></td>
+
+          <td><%= stats[:games_played] %></td>
+          <td><%= stats[:points] %></td>
+          <td><%= stats[:goals] %></td>
+          <td><%= stats[:assists] %></td>
+
           <% if my_pick?(matchup) %>
-            <td><%= button_to "Pick", matchup_picks_path(matchup), params: { player_id: player.id }, class: "btn btn-primary" %></td>
+            <td><%= button_to "Pick", matchup_picks_path(matchup), params: { player_id: player.id }, class: "btn btn-sm btn-primary" %></td>
           <% end %>
         </tr>
       <% end %>
     </tbody>
-
   </table>
-
-
 </div>

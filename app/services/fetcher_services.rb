@@ -154,7 +154,7 @@ module FetcherServices
                 video = possible_goal["highlight"]["playbacks"].find{|playback| playback["name"].start_with?("FLASH_1800K")}
                 if !!video
                   goal = game.goals.find_by(video_id: possible_goal["statsEventId"].to_i)
-                  goal.update(video_url: possible_goal["highlight"]["playbacks"].last["url"])
+                  goal.update(video_url: video["url"])
                 end
               end
             end

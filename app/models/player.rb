@@ -9,6 +9,8 @@ class Player < ApplicationRecord
   validates_presence_of :name
   validates_uniqueness_of :name
 
+  attr_reader :stats
+
   def position_in_games(games)
     self.game_players.find_by(game: games).position
   end
@@ -23,14 +25,18 @@ class Player < ApplicationRecord
   end
 
   def regular_season_stats_hash(season)
-    games = self.games.where(season: season, game_type: "R")
-    stats = {
-      games_played: games.count,
-      goals: self.goals_in_games(games).count,
-      assists: self.assists_in_games(games).count
-    }
-    stats[:points] = stats[:goals] + stats[:assists]
-    stats
+    if @stats
+      @stats
+    else
+      games = self.games.where(season: season, game_type: "R")
+      @stats = {
+        games_played: games.count,
+        goals: self.goals_in_games(games).count,
+        assists: self.assists_in_games(games).count
+      }
+      @stats[:points] = @stats[:goals] + @stats[:assists]
+      @stats
+    end
   end
 
   def goals_in_games(games)

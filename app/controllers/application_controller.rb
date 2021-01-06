@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
     @user ||= User.find(session[:user_id])
   end
 
+  def log_in
+    session[:user_id] = @user.id
+  end
+
   def is_logged_in?
     !!session[:user_id]
   end

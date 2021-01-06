@@ -13,7 +13,7 @@ module ApplicationHelper
   end
 
   def date_time_format(datetime)
-    (datetime + tz_offset.hours).strftime("%B %e, %Y at %I:%M %p")
+    (datetime + tz_offset.hours).strftime("%b %e, %Y at %I:%M %p")
   end
 
   # change hard coding tz offset at some point

@@ -64,7 +64,7 @@ class Matchup < ApplicationRecord
 
   # this ought to be changed at some point so the tz offset isn't hardcoded for est
   def related_games
-    self.team.games.where("datetime >= ? AND datetime <= ?", self.start_date, self.end_date + 1.day + 5.hours)
+    self.team.games.where("datetime >= ? AND datetime <= ?", self.start_date + 5.hours, self.end_date + 1.day + 5.hours)
   end
 
   def related_players
@@ -114,7 +114,17 @@ class Matchup < ApplicationRecord
   end
 
   def winner
-    self.user_matchups.max{|user_matchup| user_matchup.total_points}
+    max = self.user_matchups.map{|user_matchup| user_matchup.total_points}.max
+    winner = self.user_matchups.select{|user_matchup| user_matchup.total_points == max}
+    if winner.length == 1
+      "Winner: #{winner.first.display_name}"
+    else
+      "Tie: #{winner.map{|user_matchup| user_matchup.display_name}.join(' == ')}".html_safe
+    end
+  end
+
+  def draft_order
+    "#{self.user_matchups.order(:draft_order).map{|user| user.display_name}.join(' > ')}".html_safe
   end
 
   private
@@ -139,9 +149,5 @@ class Matchup < ApplicationRecord
   def delete_extra_invitations
     self.invitations.destroy_all
   end
-
-
-
-
 
 end

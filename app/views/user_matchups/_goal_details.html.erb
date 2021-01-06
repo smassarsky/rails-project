@@ -5,21 +5,29 @@
       <table class="table mb-0">
         <thead>
           <th>Player</th>
-          <th>Date</th>
+          <th>Assist 1</th>
+          <th>Assist 2</th>
           <th>Period</th>
           <th>Time</th>
           <th>Video</th>
         </thead>
         <tbody>
-          <% user_matchup.goals.joins(:game).order("games.datetime ASC", "period ASC", "time ASC").each do |goal| %>
+          <% goals = user_matchup.goals.joins(:game).order("games.datetime ASC", "period ASC", "time ASC") %>
+          <% goals.each_with_index do |goal, index| %>
+            <% if goal.game != goals[index - 1].game %>
+              <tr>
+                <th colspan="6" class="text-center"><%= "#{date_format(goal.game_time)} Vs #{goal.opponent}" %></th>
+              </tr>
+            <% end %>
             <tr>
-              <td><%= goal.player.name %></td>
-              <td><%= date_format(goal.game.datetime) %></td>
+              <td><%= goal.player_name %></td>
+              <td><%= goal.assist_names[0] %></td>
+              <td><%= goal.assist_names[1] %></td>
               <td><%= goal.period %></td>
               <td><%= goal.time %></td>
               <td>
                 <% if goal.has_video? %>
-                  <%= link_to goal.video_url, class: "btn btn-primary" do %>
+                  <%= link_to goal.video_url, class: "btn btn-sm btn-primary" do %>
                     <%= "Video".html_safe %>
                     <%= fas_icon "play" %>
                   <% end %>

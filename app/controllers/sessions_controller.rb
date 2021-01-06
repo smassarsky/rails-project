@@ -45,9 +45,7 @@ class SessionsController < ApplicationController
     !!@user && @user.authenticate(params[:user][:password])
   end
 
-  def log_in
-    session[:user_id] = @user.id
-  end
+
 
   def log_out
     session.clear

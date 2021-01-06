@@ -5,21 +5,27 @@
       <table class="table mb-0">
         <thead>
           <th>Player</th>
-          <th>Date</th>
+          <th>Scorer</th>
           <th>Period</th>
           <th>Time</th>
           <th>Video</th>
         </thead>
         <tbody>
-          <% user_matchup.assists.joins(:game).order("games.datetime ASC", "goals.period ASC", "goals.time ASC").each do |assist| %>
+          <% assists = user_matchup.assists.joins(:game).order("games.datetime ASC", "goals.period ASC", "goals.time ASC") %>
+          <% assists.each_with_index do |assist, index| %>
+            <% if assist.game != assists[index - 1].game %>
+              <tr>
+                <th colspan="5" class="text-center"><%= "#{date_format(assist.game_time)} Vs #{assist.opponent.name}" %></th>
+              </tr>
+            <% end %>
             <tr>
-              <td><%= assist.player.name %></td>
-              <td><%= date_format(assist.game.datetime) %></td>
-              <td><%= assist.goal.period %></td>
-              <td><%= assist.goal.time %></td>
+              <td><%= assist.player_name %></td>
+              <td><%= assist.scorer %></td>
+              <td><%= assist.period %></td>
+              <td><%= assist.time %></td>
               <td>
-                <% if assist.goal.has_video? %>
-                  <%= link_to assist.goal.video_url, class: "btn btn-primary" do %>
+                <% if assist.has_video? %>
+                  <%= link_to assist.video_url, class: "btn btn-sm btn-primary" do %>
                     <%= "Video".html_safe %>
                     <%= fas_icon "play" %>
                   <% end %>
